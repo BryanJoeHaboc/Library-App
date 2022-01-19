@@ -1,4 +1,10 @@
-let myLibrary = [];
+const modalBtn = document.getElementById("modalBtn");
+const closeBtn = document.getElementById("closeBtn");
+const modal = document.getElementById("add-book-modal");
+
+modalBtn.addEventListener("click", viewModal);
+
+closeBtn.addEventListener("click", closeModal);
 
 function Book(book) {
   this.bookTitle = book.title;
@@ -18,26 +24,70 @@ const getDataFromForm = () => {
   return data;
 };
 
-const removeCard = (container) => {
-  console.log(container);
-  container.innerHTML = "";
-  console.log(container);
+const removeCard = (data) => {
+  console.log("removeCard", data._id);
+  let number = data._id;
+  const card = document.getElementById("book-" + ++number);
+  console.log(card);
+  const container = document.getElementById("card-container");
+  container.removeChild(card);
+  while (card.firstChild) {
+    card.removeChild(card.firstChild);
+  }
+
+  const lib = JSON.parse(localStorage.getItem("library"));
+
+  console.log(data._id);
+  const newArr = lib.filter((ele) => ele._id !== data._id);
+
+  console.log("newArr", newArr);
+
+  if (!newArr.length) {
+    localStorage.clear("library");
+  } else {
+    localStorage.setItem("library", JSON.stringify(newArr));
+  }
 };
 
-function addBookToLibrary() {
+function addBookToLibrary(event) {
+  event.preventDefault();
   const data = getDataFromForm();
+
+  // clear inputs
+  const frm = document.getElementsByName("addBookForm")[0];
+  frm.reset(); // Reset all form data
+
   console.log(data);
+
+  const lib = JSON.parse(localStorage.getItem("library"));
+  const count = !lib ? 0 : lib.length;
+
   const book = new Book(data);
-  myLibrary.push(book);
+
+  book._id = count;
+
+  if (lib) {
+    lib.push(book);
+    localStorage.setItem("library", JSON.stringify(lib));
+  } else {
+    const temp = [];
+    temp.push(book);
+    localStorage.setItem("library", JSON.stringify(temp));
+  }
+
+  closeModal();
+  addCard(book, count);
 }
 
-function addCard() {
-  const data = {
-    title: "Harry Potter",
-    author: "J.K. Rowling",
-    pages: "350",
-    status: "Will Read",
-  };
+function viewModal() {
+  document.getElementById("add-book-modal").style.display = "block";
+}
+
+function closeModal() {
+  document.getElementById("add-book-modal").style.display = "none";
+}
+
+function addCard(data, count) {
   const container = document.querySelector(".card-container");
   const children = document.createElement("div");
 
@@ -65,6 +115,7 @@ function addCard() {
   statusLabel.innerHTML = "Status: " + data.status;
 
   children.classList.add("card-book");
+  children.setAttribute("id", "book-" + ++count);
   titleLabel.classList.add("card-content");
   authorLabel.classList.add("card-content");
   pagesLabel.classList.add("card-content");
@@ -75,10 +126,14 @@ function addCard() {
   slider.classList.add("slider");
   slider.classList.add("round");
 
+  removeButton.classList.add("delete-card-btn");
+  removeButton.innerText = "Remove Book";
+  removeButton.addEventListener("click", removeCard.bind(null, data, count));
   switchSlider.append(checkBox);
   switchSlider.append(slider);
 
-  removeButton.onclick = removeCard(container);
+  // removeButton.onclick = removeCard(container);
+
   // title.classList.add("card-content");
   // author.classList.add("card-content");
   // pages.classList.add("card-content");

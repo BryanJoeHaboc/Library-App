@@ -10,24 +10,23 @@
   <body>
     <div class="lib-header">
       <div class="lib-title"><h2>LIBRARY</h2></div>
-      <button onclick="addCard()" class="add-book">New Book</button>
+      <button id="modalBtn"  class="add-book">New Book</button>
     </div>
 
-    <div class="card-container"></div>
+    <div id="card-container" class="card-container"></div>
 
-    <div class="add-book-modal">
+    <div id="add-book-modal" class="add-book-modal">
       <div class="modal-content">
-        <span class="closeBtn"> &times; </span>
+        <span id="closeBtn"class="closeBtn"> &times; </span>
         <h1 class="add-book-title">Add your book</h1>
 
         <form  name="addBookForm" action="" class="add-book-form">
           <label class="label-add-book">Book Title: </label>
           <input
-            name="book-title"
+            name="title"
             class="input-add-book"
             placeholder="Book Title"
             required
-            value="Harry Potter"
           />
           <label class="label-add-book">Author: </label>
           <input
@@ -36,16 +35,13 @@
             class="input-add-book"
             placeholder="Author"
             required
-            value="J.K. Rowling"
           />
           <label class="label-add-book">Number of Pages: </label>
-
           <input
-            name="description"
+            name="pages"
             type="number"
             class="input-add-book"
             required
-            value=350
           ></input>
           <label class="label-add-book">Status: </label>
           <select name="status" id="" class="input-add-book" required>
@@ -54,7 +50,7 @@
             <option value="Reading">Reading</option>
             <option value="Finished">Finished</option>
           </select>
-          <button type="submit" class="add-book-btn" type="button" onclick="addBookToLibrary(); return false">Add Book</button>
+          <button  class="add-book-btn" type="button" onclick="addBookToLibrary(event); return false">Add Book</button>
         </form>
       </div>
     </div>

@@ -119,6 +119,21 @@ p.card-content {
   font-size: 30px;
 }
 
+.delete-card-btn {
+  width: 300px;
+  margin: 10px 20px;
+  height: 60px;
+  background-color: #ff6347;
+  border-radius: 20px;
+  font-size: 20px;
+  color: white;
+}
+
+.delete-card-btn:hover,
+.add-book-btn:hover {
+  cursor: pointer;
+}
+
 /* Rounded sliders */
 
 .switch {
