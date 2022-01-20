@@ -7,7 +7,7 @@ modalBtn.addEventListener("click", viewModal);
 closeBtn.addEventListener("click", closeModal);
 
 function Book(book) {
-  this.bookTitle = book.title;
+  this.title = book.title;
   this.author = book.author;
   this.pages = book.pages;
   this.status = book.status;
@@ -25,10 +25,9 @@ const getDataFromForm = () => {
 };
 
 const removeCard = (data) => {
-  console.log("removeCard", data._id);
   let number = data._id;
   const card = document.getElementById("book-" + ++number);
-  console.log(card);
+
   const container = document.getElementById("card-container");
   container.removeChild(card);
   while (card.firstChild) {
@@ -37,10 +36,7 @@ const removeCard = (data) => {
 
   const lib = JSON.parse(localStorage.getItem("library"));
 
-  console.log(data._id);
   const newArr = lib.filter((ele) => ele._id !== data._id);
-
-  console.log("newArr", newArr);
 
   if (!newArr.length) {
     localStorage.clear("library");
@@ -56,8 +52,6 @@ function addBookToLibrary(event) {
   // clear inputs
   const frm = document.getElementsByName("addBookForm")[0];
   frm.reset(); // Reset all form data
-
-  console.log(data);
 
   const lib = JSON.parse(localStorage.getItem("library"));
   const count = !lib ? 0 : lib.length;
@@ -88,13 +82,9 @@ function closeModal() {
 }
 
 function addCard(data, count) {
+  console.log(data);
   const container = document.querySelector(".card-container");
   const children = document.createElement("div");
-
-  // const title = document.createElement("p");
-  // const author = document.createElement("p");
-  // const pages = document.createElement("p");
-  // const status = document.createElement("p");
 
   const titleLabel = document.createElement("p");
   const authorLabel = document.createElement("p");
@@ -105,58 +95,65 @@ function addCard(data, count) {
   const switchSlider = document.createElement("label");
   const checkBox = document.createElement("input");
   const slider = document.createElement("span");
+  const sliderLabel = document.createElement("label");
 
   // remove button
   const removeButton = document.createElement("button");
 
+  //add data to the card
   titleLabel.innerHTML = "Title: " + data.title;
   authorLabel.innerHTML = "Author: " + data.author;
   pagesLabel.innerHTML = "Pages: " + data.pages;
   statusLabel.innerHTML = "Status: " + data.status;
+  sliderLabel.innerHTML = "Are you done reading this?";
 
+  // add classes
   children.classList.add("card-book");
+  // add unique attribute to every card
   children.setAttribute("id", "book-" + ++count);
   titleLabel.classList.add("card-content");
   authorLabel.classList.add("card-content");
   pagesLabel.classList.add("card-content");
   statusLabel.classList.add("card-content");
-
+  sliderLabel.classList.add("card-content");
+  sliderLabel.classList.add("card-toggle");
+  // making the toggle switch
   switchSlider.classList.add("switch");
   checkBox.setAttribute("type", "checkbox");
+  checkBox.setAttribute("id", "checkbox-toggle");
   slider.classList.add("slider");
   slider.classList.add("round");
-
+  //remove button
   removeButton.classList.add("delete-card-btn");
   removeButton.innerText = "Remove Book";
   removeButton.addEventListener("click", removeCard.bind(null, data, count));
+  //append child to parent
   switchSlider.append(checkBox);
   switchSlider.append(slider);
-
-  // removeButton.onclick = removeCard(container);
-
-  // title.classList.add("card-content");
-  // author.classList.add("card-content");
-  // pages.classList.add("card-content");
-  // status.classList.add("card-content");
-
-  // title.innerHTML = data.title;
-  // author.innerHTML = data.author;
-  // pages.innerHTML = data.pages;
-  // status.innerHTML = data.status;
-
   children.append(titleLabel);
-  // children.append(title);
   children.append(authorLabel);
-  // children.append(author);
   children.append(pagesLabel);
-  // children.append(pages);
   children.append(statusLabel);
-  // children.append(status);
-
+  children.append(sliderLabel);
   children.append(switchSlider);
-
-  //remove button
   children.append(removeButton);
-
   container.appendChild(children);
+
+  checkBox.addEventListener("change", function (e) {
+    const card = document.getElementById("book-" + count);
+
+    if (e.target.checked) {
+      card.style.backgroundColor = "#34c759";
+    } else {
+      card.style.backgroundColor = "#cb997e";
+    }
+  });
+}
+
+if (localStorage.getItem("library")) {
+  const libArr = JSON.parse(localStorage.getItem("library"));
+
+  for (let i = 0; i < libArr.length; i++) {
+    addCard(libArr[i], i);
+  }
 }

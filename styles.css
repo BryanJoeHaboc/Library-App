@@ -1,3 +1,7 @@
+body {
+  background-color: #f7dbb8;
+}
+
 .lib-header {
   height: 20vh;
   background-color: #643d01;
@@ -94,7 +98,6 @@ h1.add-book-title {
 
 .card-container {
   display: flex;
-  background-color: lightblue;
 
   gap: 40px;
   margin: 20px 80px;
@@ -105,7 +108,7 @@ h1.add-book-title {
   width: 350px;
   height: 400px;
   border: solid;
-  background-color: violet;
+  background-color: #cb997e;
   border-radius: 10px;
 }
 
@@ -196,4 +199,21 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+.card-toggle {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.checkboxes label {
+  display: inline-block;
+  padding-right: 10px;
+  white-space: nowrap;
+}
+.checkboxes input {
+  vertical-align: middle;
+}
+.checkboxes label span {
+  vertical-align: middle;
 }
