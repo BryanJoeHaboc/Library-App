@@ -1,88 +1,39 @@
-const modalBtn = document.getElementById("modalBtn");
-const closeBtn = document.getElementById("closeBtn");
-const modal = document.getElementById("add-book-modal");
-
-modalBtn.addEventListener("click", viewModal);
-
-closeBtn.addEventListener("click", closeModal);
-
-function Book(book) {
-  this.title = book.title;
-  this.author = book.author;
-  this.pages = book.pages;
-  this.status = book.status;
-}
-
-const getDataFromForm = () => {
-  const data = {};
-  for (let i = 0; i < document.addBookForm.elements.length; i++) {
-    const fieldName = document.addBookForm.elements[i].name;
-    const fieldValue = document.addBookForm.elements[i].value;
-
-    data[fieldName] = fieldValue;
+class Book {
+  constructor(bookObj) {
+    this.title = bookObj.title;
+    this.author = bookObj.author;
+    this.pages = bookObj.pages;
+    this.status = bookObj.status;
+    this._id;
   }
-  return data;
-};
-
-const removeCard = (data) => {
-  let number = data._id;
-  const card = document.getElementById("book-" + ++number);
-
-  const container = document.getElementById("card-container");
-  container.removeChild(card);
-  while (card.firstChild) {
-    card.removeChild(card.firstChild);
-  }
-
-  const lib = JSON.parse(localStorage.getItem("library"));
-
-  const newArr = lib.filter((ele) => ele._id !== data._id);
-
-  if (!newArr.length) {
-    localStorage.clear("library");
-  } else {
-    localStorage.setItem("library", JSON.stringify(newArr));
-  }
-};
-
-function addBookToLibrary(event) {
-  event.preventDefault();
-  const data = getDataFromForm();
-
-  // clear inputs
-  const frm = document.getElementsByName("addBookForm")[0];
-  frm.reset(); // Reset all form data
-
-  const lib = JSON.parse(localStorage.getItem("library"));
-  const count = !lib ? 0 : lib.length;
-
-  const book = new Book(data);
-
-  book._id = count;
-
-  if (lib) {
-    lib.push(book);
-    localStorage.setItem("library", JSON.stringify(lib));
-  } else {
-    const temp = [];
-    temp.push(book);
-    localStorage.setItem("library", JSON.stringify(temp));
-  }
-
-  closeModal();
-  addCard(book, count);
 }
 
 function viewModal() {
   document.getElementById("add-book-modal").style.display = "block";
 }
 
-function closeModal() {
-  document.getElementById("add-book-modal").style.display = "none";
-}
-
 function addCard(data, count) {
-  console.log(data);
+  const removeCard = (data) => {
+    let number = data._id;
+    const card = document.getElementById("book-" + ++number);
+
+    const container = document.getElementById("card-container");
+    container.removeChild(card);
+    while (card.firstChild) {
+      card.removeChild(card.firstChild);
+    }
+
+    const lib = JSON.parse(localStorage.getItem("library"));
+
+    const newArr = lib.filter((ele) => ele._id !== data._id);
+
+    if (!newArr.length) {
+      localStorage.clear("library");
+    } else {
+      localStorage.setItem("library", JSON.stringify(newArr));
+    }
+  };
+
   const container = document.querySelector(".card-container");
   const children = document.createElement("div");
 
@@ -149,6 +100,52 @@ function addCard(data, count) {
     }
   });
 }
+
+function closeModalAndExecute() {
+  document.getElementById("add-book-modal").style.display = "none";
+  const frm = document.getElementsByName("addBookForm")[0];
+
+  const data = (function () {
+    {
+      const data = {};
+      for (let i = 0; i < document.addBookForm.elements.length; i++) {
+        const fieldName = document.addBookForm.elements[i].name;
+        const fieldValue = document.addBookForm.elements[i].value;
+
+        data[fieldName] = fieldValue;
+      }
+      return data;
+    }
+  })();
+
+  frm.reset(); //Reset all form data
+  const lib = JSON.parse(localStorage.getItem("library"));
+  const count = !lib ? 0 : lib.length;
+
+  const book = new Book(data);
+
+  book._id = count;
+
+  if (lib) {
+    lib.push(book);
+    localStorage.setItem("library", JSON.stringify(lib));
+  } else {
+    const temp = [];
+    temp.push(book);
+    localStorage.setItem("library", JSON.stringify(temp));
+  }
+
+  addCard(book, count);
+}
+
+// main code
+
+const modalBtn = document.getElementById("modalBtn");
+const closeBtn = document.getElementById("closeBtn");
+const modal = document.getElementById("add-book-modal");
+
+modalBtn.addEventListener("click", viewModal);
+closeBtn.addEventListener("click", closeModalAndExecute);
 
 if (localStorage.getItem("library")) {
   const libArr = JSON.parse(localStorage.getItem("library"));
