@@ -8,6 +8,12 @@ class Book {
   }
 }
 
+function formValidation() {
+  if (document.getElementById("title").validity.valueMissing) {
+    alert("lol");
+  }
+}
+
 function viewModal() {
   document.getElementById("add-book-modal").style.display = "block";
 }
@@ -102,6 +108,8 @@ function addCard(data, count) {
 }
 
 function closeModalAndExecute() {
+  formValidation();
+
   document.getElementById("add-book-modal").style.display = "none";
   const frm = document.getElementsByName("addBookForm")[0];
 
@@ -109,10 +117,14 @@ function closeModalAndExecute() {
     {
       const data = {};
       for (let i = 0; i < document.addBookForm.elements.length; i++) {
-        const fieldName = document.addBookForm.elements[i].name;
-        const fieldValue = document.addBookForm.elements[i].value;
-
-        data[fieldName] = fieldValue;
+        if (
+          document.addBookForm.elements[i].name !== "" &&
+          document.addBookForm.elements[i].value !== ""
+        ) {
+          const fieldName = document.addBookForm.elements[i].name;
+          const fieldValue = document.addBookForm.elements[i].value;
+          data[fieldName] = fieldValue;
+        }
       }
       return data;
     }
