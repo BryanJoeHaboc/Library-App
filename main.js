@@ -9,9 +9,46 @@ class Book {
   }
 }
 
-function formValidation() {
-  if (document.getElementById("title").validity.valueMissing) {
-    alert("lol");
+function formValidation(e) {
+  console.log("form validation");
+  if (document.getElementById("title").value === "") {
+    // document.getElementsById("title").classList.remove("input-add-book");
+    document.getElementById("title").classList.add("input-add-book-validation");
+  } else {
+    document
+      .getElementById("title")
+      .classList.remove("input-add-book-validation");
+  }
+
+  if (document.getElementById("author").value === "") {
+    // document.getElementsById("author").classList.remove("input-add-book");
+    document
+      .getElementById("author")
+      .classList.add("input-add-book-validation");
+  } else {
+    document
+      .getElementById("author")
+      .classList.remove("input-add-book-validation");
+  }
+
+  if (document.getElementById("pages").value === "") {
+    // document.getElementsById("pages").classList.remove("input-add-book");
+    document.getElementById("pages").classList.add("input-add-book-validation");
+  } else {
+    document
+      .getElementById("pages")
+      .classList.remove("input-add-book-validation");
+  }
+
+  if (document.getElementById("status").value === "") {
+    // document.getElementsById("status").classList.remove("input-add-book");
+    document
+      .getElementById("status")
+      .classList.add("input-add-book-validation");
+  } else {
+    document
+      .getElementById("status")
+      .classList.remove("input-add-book-validation");
   }
 }
 
@@ -109,7 +146,6 @@ function addCard(data, count) {
 }
 
 function closeModalAndExecute(e) {
-  // formValidation();
   e.preventDefault();
   document.getElementById("add-book-modal").style.display = "none";
   const frm = document.getElementsByName("addBookForm")[0];
@@ -162,10 +198,19 @@ const modalBtn = document.getElementById("modalBtn");
 const closeBtn = document.getElementById("closeBtn");
 const modal = document.getElementById("add-book-modal");
 const formBook = document.getElementById("addBookForm");
+const submitButton = document.getElementById("submit-button");
 
 modalBtn.addEventListener("click", viewModal);
-closeBtn.addEventListener("click", closeModalAndExecute);
+closeBtn.addEventListener("click", function (e) {
+  document.getElementById("add-book-modal").style.display = "none";
+});
 formBook.addEventListener("submit", closeModalAndExecute);
+submitButton.addEventListener("click", function (e) {
+  formValidation(e);
+});
+formBook.addEventListener("input", function (e) {
+  formValidation(e);
+});
 
 if (localStorage.getItem("library")) {
   const libArr = JSON.parse(localStorage.getItem("library"));

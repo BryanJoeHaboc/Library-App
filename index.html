@@ -26,11 +26,13 @@
             id="title"
             name="title"
             class="input-add-book"
+            type="text"
             placeholder="Book Title"
             required
           />
            <label class="label-add-book">Author: </label>
           <input
+            id="author"
             name="author"
             type="text"
             class="input-add-book"
@@ -39,13 +41,14 @@
           />
           <label class="label-add-book">Number of Pages: </label>
           <input
+            id="pages"
             name="pages"
             type="number"
             class="input-add-book"
             required
           ></input>
           <label class="label-add-book">Status: </label>
-          <select name="status" id="" class="input-add-book" required>
+          <select name="status" id="status" class="input-add-book" required>
             <option value="">Select Status...</option>
            <option value="Will Read">Will Read</option>
             <option value="Reading">Reading</option>
@@ -54,6 +57,7 @@
           <input
             class="add-book-btn"
             type="submit"
+            id="submit-button"
           >
         </form>
       </div>
