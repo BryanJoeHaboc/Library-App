@@ -84,11 +84,24 @@ button.add-book:hover {
   border-radius: 10px;
   font-size: 20px;
   margin-bottom: 10px;
+  border: blueviolet;
 }
 
 .add-book-btn {
   border-radius: 10px;
   font-size: 20px;
+}
+
+input[type="text"].input-add-book-validation,
+input[type="number"].input-add-book-validation,
+select.input-add-book-validation {
+  border: 2px solid red;
+  border-radius: 10px;
+}
+
+input[type="text"].input-add-book-validation:focus {
+  border: 4px solid red;
+  border-radius: 10px;
 }
 
 h1.add-book-title {

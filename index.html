@@ -10,26 +10,29 @@
   <body>
     <div class="lib-header">
       <div class="lib-title"><h2>LIBRARY</h2></div>
-      <button id="modalBtn"  class="add-book">New Book</button>
+      <button id="modalBtn" class="add-book">New Book</button>
     </div>
 
     <div id="card-container" class="card-container"></div>
 
     <div id="add-book-modal" class="add-book-modal">
       <div class="modal-content">
-        <span id="closeBtn"class="closeBtn"> &times; </span>
+        <span id="closeBtn" class="closeBtn"> &times; </span>
         <h1 class="add-book-title">Add your book</h1>
 
-        <form  name="addBookForm" action="" class="add-book-form">
+        <form name="addBookForm" class="add-book-form" id="addBookForm">
           <label class="label-add-book">Book Title: </label>
           <input
+            id="title"
             name="title"
             class="input-add-book"
+            type="text"
             placeholder="Book Title"
             required
           />
-          <label class="label-add-book">Author: </label>
+           <label class="label-add-book">Author: </label>
           <input
+            id="author"
             name="author"
             type="text"
             class="input-add-book"
@@ -38,19 +41,24 @@
           />
           <label class="label-add-book">Number of Pages: </label>
           <input
+            id="pages"
             name="pages"
             type="number"
             class="input-add-book"
             required
           ></input>
           <label class="label-add-book">Status: </label>
-          <select name="status" id="" class="input-add-book" required>
-            <!-- <option value="">Select Status...</option> -->
-            <option value="Will Read">Will Read</option>
+          <select name="status" id="status" class="input-add-book" required>
+            <option value="">Select Status...</option>
+           <option value="Will Read">Will Read</option>
             <option value="Reading">Reading</option>
             <option value="Finished">Finished</option>
-          </select>
-          <button  class="add-book-btn" type="button" onclick="  closeModalAndExecute(); return false">Add Book</button>
+          </select> 
+          <input
+            class="add-book-btn"
+            type="submit"
+            id="submit-button"
+          >
         </form>
       </div>
     </div>
