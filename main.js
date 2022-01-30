@@ -1,5 +1,6 @@
 class Book {
   constructor(bookObj) {
+    console.log(bookObj);
     this.title = bookObj.title;
     this.author = bookObj.author;
     this.pages = bookObj.pages;
@@ -107,9 +108,9 @@ function addCard(data, count) {
   });
 }
 
-function closeModalAndExecute() {
-  formValidation();
-
+function closeModalAndExecute(e) {
+  // formValidation();
+  e.preventDefault();
   document.getElementById("add-book-modal").style.display = "none";
   const frm = document.getElementsByName("addBookForm")[0];
 
@@ -124,9 +125,13 @@ function closeModalAndExecute() {
           const fieldName = document.addBookForm.elements[i].name;
           const fieldValue = document.addBookForm.elements[i].value;
           data[fieldName] = fieldValue;
+        } else {
+          break;
         }
       }
-      return data;
+      const isEmpty = Object.values(data).every((x) => x === null || x === "");
+
+      return isEmpty ? false : data;
     }
   })();
 
@@ -136,18 +141,19 @@ function closeModalAndExecute() {
 
   const book = new Book(data);
 
-  book._id = count;
+  if (book !== false) {
+    book._id = count;
 
-  if (lib) {
-    lib.push(book);
-    localStorage.setItem("library", JSON.stringify(lib));
-  } else {
-    const temp = [];
-    temp.push(book);
-    localStorage.setItem("library", JSON.stringify(temp));
+    if (lib) {
+      lib.push(book);
+      localStorage.setItem("library", JSON.stringify(lib));
+    } else {
+      const temp = [];
+      temp.push(book);
+      localStorage.setItem("library", JSON.stringify(temp));
+    }
+    addCard(book, count);
   }
-
-  addCard(book, count);
 }
 
 // main code
@@ -155,9 +161,11 @@ function closeModalAndExecute() {
 const modalBtn = document.getElementById("modalBtn");
 const closeBtn = document.getElementById("closeBtn");
 const modal = document.getElementById("add-book-modal");
+const formBook = document.getElementById("addBookForm");
 
 modalBtn.addEventListener("click", viewModal);
 closeBtn.addEventListener("click", closeModalAndExecute);
+formBook.addEventListener("submit", closeModalAndExecute);
 
 if (localStorage.getItem("library")) {
   const libArr = JSON.parse(localStorage.getItem("library"));
